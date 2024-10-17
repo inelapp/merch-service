@@ -20,18 +20,16 @@ class GetUser implements UseCase<GetUserRequestDto, Response> {
     async execute(request?: GetUserRequestDto, service?: any): Promise<Response> {
         try {
             console.log("usecase: "+request)
-            if (!request || (!request.id && !request.username) ) {
+            if (!request) {
                 return err(new UserGetBadRequestError("No data sent"))
             }
 
             const user: any = {};
 
-            if (request.id && isValidObjectId(request.id)) {
-                user._id = request.id;
-            }
-
-            if (request.username) {
-                user.username = request.username;
+            if (isValidObjectId(request.data)) {
+                user._id = request.data;
+            }else{
+                user.username = request.data;
             }
 
             const result = await this.userRespository.getUser(user);

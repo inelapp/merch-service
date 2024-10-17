@@ -58,9 +58,8 @@ export class UserController {
 
     // TODO: Hacer Metodo de GetUser (por id, y por username)
     async getUser(req: Request, res: Response) {
-        const {id, username} = req.params;
-        const result = await getUser.execute({ id: id as string, 
-                                            username: username as string });
+        const {data} = req.params;
+        const result = await getUser.execute({data});
         if (result.isErr()) {
             const error = result.error;
             switch (error.constructor) {
