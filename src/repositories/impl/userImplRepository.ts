@@ -45,4 +45,12 @@ export class UserImplRepository implements IUserRepository {
             throw error;
         }
     }
+    async getUser(request: IUserProps): Promise<User | null>{
+        try{
+            const result = await this.userModel.findOne(request);
+            return result ? UserMap.fromDbToDomain(result) : null;
+        }catch(error){
+            throw error;
+        }
+    }
 }
