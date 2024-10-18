@@ -7,6 +7,7 @@ export interface IUserProps {
     email?: string
     status: string
     token?: string
+    roles?: string[]
 }
 
 export class User {
@@ -16,6 +17,7 @@ export class User {
     token?: string
     email?: string;
     status: string;
+    roles?: string[]
 
     constructor(props: IUserProps){ 
         Object.assign(this, props)

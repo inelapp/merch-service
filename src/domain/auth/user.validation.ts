@@ -6,7 +6,8 @@ const userSchema = Joi.object<IUserProps>({
     password: Joi.string().required(),
     email: Joi.string().email().optional(),
     token: Joi.string().optional(),
-    status: Joi.string().optional().valid('active', 'inactive', 'pending')
+    status: Joi.string().optional().valid('active', 'inactive', 'pending'),
+    roles: Joi.array().items(Joi.string()).optional()
 })
 
 const validateUserSchema = (user: IUserProps): Joi.ValidationResult<IUserProps> => {

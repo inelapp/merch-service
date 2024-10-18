@@ -1,4 +1,3 @@
-import { Document } from "mongoose";
 import { IUserDb } from "src/db/interface";
 import { User } from "src/domain/auth/user";
 

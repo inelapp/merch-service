@@ -4,4 +4,5 @@ export interface CreateUserRequestDto {
     email?: string;
     status: string;
     token?: string;
+    roles?: string[];
 }

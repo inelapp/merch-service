@@ -18,7 +18,6 @@ export class UserController {
         const { password, status, username, email, token } = req.body as CreateUserRequestDto;
         const result = await createUser.execute({ password, status, username, email, token });
 
-        // TODO: Añadir manejo de errores
         if (result.isErr()) {
             const error = result.error;
             switch (error.constructor) {
@@ -56,7 +55,6 @@ export class UserController {
         return response(res, result.value, StatusCode.OK)
     }
 
-    // TODO: Hacer Metodo de GetUser (por id, y por username)
     async getUser(req: Request, res: Response) {
         const {data} = req.params;
         const result = await getUser.execute({data});
@@ -73,21 +71,4 @@ export class UserController {
         }
         return response(res, result.value, StatusCode.OK);
     }
-    // async getUser(req: Request, res: Response) {
-    //     const {id, username} = req.query;
-    //     const result = await getUser.execute({ id: id as string, 
-    //                                         username: username as string });
-    //     if (result.isErr()) {
-    //         const error = result.error;
-    //         switch (error.constructor) {
-    //             case UserGetBadRequestError:
-    //                 return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
-    //             case UserGetUserNotFoundError:
-    //                 return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
-    //             default:
-    //                 return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
-    //         }
-    //     }
-    //     return response(res, result.value, StatusCode.OK);
-    // }
 }

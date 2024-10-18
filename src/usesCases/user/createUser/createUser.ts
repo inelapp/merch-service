@@ -5,6 +5,7 @@ import { CreateUserRequestDto } from "./createUserRequestDto";
 import { User } from "src/domain/auth/user";
 import { IUserRepository } from "src/repositories";
 import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "./createUserErrors";
+import { UserRole } from "src/types";
 
 type Response = Result<CreateUserResponseDto | UserCreateBadRequestError, UserCreateUserAlreadyExistError>
 
@@ -17,6 +18,9 @@ class CreateUser implements UseCase<CreateUserRequestDto, Response> {
 
     async execute(request: CreateUserRequestDto, service?: any): Promise<Response> {
         try {
+            if(!request.roles) {
+                request.roles = [UserRole.USER];
+            }
             const userInstanceOrError = User.create(request);
 
             //Invalid user
