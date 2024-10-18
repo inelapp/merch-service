@@ -17,13 +17,16 @@ class ConfirmUser implements UseCase<ConfirmUserRequestDto, Response> {
     async execute(request: ConfirmUserRequestDto, service?: any): Promise<Response> {
         try {
             const userExist = await this.userRepository.getUserByUsername(request.username);
+            //Usuario existe
             if(!userExist){
                 return err(new UserConfirmUserNotFoundError())
             }
+            //Usuario ya esta activo
             if(userExist.status === 'active'){
                 return err(new UserConfirmUserAlreadyActiveError())
             }
             const result = await this.userRepository.confirmUser(request.token, userExist.username);
+            //Token no valido
             if(!result){
                 return err(new UserConfirmInvalidTokenError())
             }

@@ -4,9 +4,10 @@ import { UseCase } from "../../../utils";
 import { CreateUserRequestDto } from "./createUserRequestDto";
 import { User } from "src/domain/auth/user";
 import { IUserRepository } from "src/repositories";
+import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "./createUserErrors";
 import { UserRole } from "src/types";
 
-type Response = Result<CreateUserResponseDto, Error>
+type Response = Result<CreateUserResponseDto | UserCreateBadRequestError, UserCreateUserAlreadyExistError>
 
 class CreateUser implements UseCase<CreateUserRequestDto, Response> {
     private readonly userRepository: IUserRepository;
@@ -22,12 +23,15 @@ class CreateUser implements UseCase<CreateUserRequestDto, Response> {
             }
             const userInstanceOrError = User.create(request);
 
+            //Invalid user
             if(userInstanceOrError.isErr()){
-                return err(new Error(userInstanceOrError.error))
+                return err(new UserCreateBadRequestError(userInstanceOrError.error))
             }
             const existUser = await this.userRepository.getUserByUsername(userInstanceOrError.value.username);
+            
+            //Usuario existe
             if(existUser){
-                return err(new Error('User already exist'))
+                return err(new UserCreateUserAlreadyExistError())
             }
 
             const result = await this.userRepository.createUser(userInstanceOrError.value);
