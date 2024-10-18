@@ -14,7 +14,8 @@ class UserRouter {
     routes() {
         this.router.route('/users')
             .post(this.controller.createUser.bind(this.controller))
-        this.router.post('/users/confirm/:token', this.controller.confirmUser.bind(this.controller))
+        this.router.post('/users/confirm/:token', this.controller.confirmUser.bind(this.controller)),
+        this.router.get('/users/:data', this.controller.getUser.bind(this.controller))
     }
 }
 

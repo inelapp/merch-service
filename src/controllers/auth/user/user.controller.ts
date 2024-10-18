@@ -5,36 +5,42 @@ import { UserConfirmBadRequestError, UserConfirmInvalidTokenError, UserConfirmUs
 import { createUser } from "src/usesCases/user/createUser";
 import { CreateUserRequestDto } from "src/usesCases/user/createUser/createUserRequestDto";
 import { response } from "../../../utils/response";
+import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "src/usesCases/user/createUser/createUserErrors";
+import { getUser } from "src/usesCases/user/getUser";
+import { UserGetBadRequestError, UserGetUserNotFoundError } from "src/usesCases/user/getUser/getUserErrors";
 
 export class UserController {
     constructor() {
         this.createUser = this.createUser.bind(this)
     }
 
-    async createUser(req: Request, res: Response){
-        try {
-            const { password, status, username, email, token } = req.body as CreateUserRequestDto;
-            const result = await createUser.execute({ password, status, username, email, token });
+    async createUser(req: Request, res: Response) {
+        const { password, status, username, email, token } = req.body as CreateUserRequestDto;
+        const result = await createUser.execute({ password, status, username, email, token });
 
-            // TODO: Añadir manejo de errores
-            if(result.isErr()){
-                return res.status(400).json({ error: result.error.message })
+        // TODO: Añadir manejo de errores
+        if (result.isErr()) {
+            const error = result.error;
+            switch (error.constructor) {
+                case UserCreateBadRequestError:
+                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+                case UserCreateUserAlreadyExistError:
+                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+                default:
+                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
             }
-
-            return response(res, result.value, StatusCode.CREATED)
-        } catch (error) {
-            return res.status(500).json({ error: error.message })
         }
+        return response(res, result.value, StatusCode.CREATED)
     }
 
-    async confirmUser(req: Request, res: Response){
+    async confirmUser(req: Request, res: Response) {
         const { token } = req.params;
         const { username } = req.body;
         const result = await confirmUser.execute({ token, username });
 
-        if(result.isErr()){
+        if (result.isErr()) {
             const error = result.error;
-            switch(error.constructor){
+            switch (error.constructor) {
                 case UserConfirmBadRequestError:
                     return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
                 case UserConfirmInvalidTokenError:
@@ -51,4 +57,37 @@ export class UserController {
     }
 
     // TODO: Hacer Metodo de GetUser (por id, y por username)
+    async getUser(req: Request, res: Response) {
+        const {data} = req.params;
+        const result = await getUser.execute({data});
+        if (result.isErr()) {
+            const error = result.error;
+            switch (error.constructor) {
+                case UserGetBadRequestError:
+                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+                case UserGetUserNotFoundError:
+                    return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+                default:
+                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+            }
+        }
+        return response(res, result.value, StatusCode.OK);
+    }
+    // async getUser(req: Request, res: Response) {
+    //     const {id, username} = req.query;
+    //     const result = await getUser.execute({ id: id as string, 
+    //                                         username: username as string });
+    //     if (result.isErr()) {
+    //         const error = result.error;
+    //         switch (error.constructor) {
+    //             case UserGetBadRequestError:
+    //                 return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+    //             case UserGetUserNotFoundError:
+    //                 return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+    //             default:
+    //                 return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+    //         }
+    //     }
+    //     return response(res, result.value, StatusCode.OK);
+    // }
 }
