@@ -1,22 +1,38 @@
 import { IUserProps, User } from "src/domain/auth/user";
 import { IUserRepository } from "../user.repossitory";
-import { UserModel } from "src/db/mongo.schema";
+import { UserModel, UserRoleModel } from "src/db/mongo.schema";
 import { UserMap } from "src/mappers/userMap";
+import { ClientSession, connection } from "mongoose";
 
 export class UserImplRepository implements IUserRepository {
     private readonly userModel: typeof UserModel;
+    private readonly userRoleModel: typeof UserRoleModel;
 
     constructor(){
         this.userModel = UserModel;
+        this.userRoleModel = UserRoleModel;
     }
 
     async createUser(request: IUserProps): Promise<User> {
+        const session = await connection.startSession();
         try {
-            const newUser = new this.userModel(request);
-            await newUser.save();
-            return UserMap.fromDbToDomain(newUser);
+            return await session.withTransaction(async (session: ClientSession) => {
+                const { username, password, status, email, roles, token } = request;
+                const newUser = new this.userModel({ username, password, status, email, token });
+                await newUser.save({ session });
+                const userRoles = roles?.map((role: string) => {
+                    return { userId: newUser._id, roleId: role }
+                });
+                await this.userRoleModel.insertMany(userRoles, { session });
+                await session.commitTransaction();
+
+                return UserMap.fromDbToDomain(newUser);
+            })
         } catch (error) {
+            session.abortTransaction();
             throw error;
+        } finally {
+            session.endSession();
         }
     }
 
