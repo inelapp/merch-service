@@ -8,6 +8,7 @@ import { response } from "../../../utils/response";
 import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "src/usesCases/user/createUser/createUserErrors";
 import { getUser } from "src/usesCases/user/getUser";
 import { UserGetBadRequestError, UserGetUserNotFoundError } from "src/usesCases/user/getUser/getUserErrors";
+import { encrypt } from "src/utils/bcrypt";
 
 export class UserController {
     constructor() {
@@ -16,7 +17,8 @@ export class UserController {
 
     async createUser(req: Request, res: Response) {
         const { password, status, username, email, token } = req.body as CreateUserRequestDto;
-        const result = await createUser.execute({ password, status, username, email, token });
+        const passwordHash = await encrypt(password);
+        const result = await createUser.execute({ password:passwordHash, status, username, email, token });
 
         if (result.isErr()) {
             const error = result.error;
