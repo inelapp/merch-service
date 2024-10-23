@@ -8,6 +8,8 @@ import { response } from "../../../utils/response";
 import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "src/usesCases/user/createUser/createUserErrors";
 import { getUser } from "src/usesCases/user/getUser";
 import { UserGetBadRequestError, UserGetUserNotFoundError } from "src/usesCases/user/getUser/getUserErrors";
+import { loginUser } from "src/usesCases/user/loginUser";
+import { UserLoginInvalidPasswordError, UserLoginUserNotActiveError, UserLoginUserNotFoundError } from "src/usesCases/user/loginUser/loginUserErrors";
 import { encrypt } from "src/utils/bcrypt";
 
 export class UserController {
@@ -17,8 +19,8 @@ export class UserController {
 
     async createUser(req: Request, res: Response) {
         const { password, status, username, email, token } = req.body as CreateUserRequestDto;
-        const passwordHash = await encrypt(password);
-        const result = await createUser.execute({ password:passwordHash, status, username, email, token });
+        const hashedPassword = await encrypt(password)
+        const result = await createUser.execute({ password:hashedPassword, status, username, email, token });
 
         if (result.isErr()) {
             const error = result.error;
@@ -58,8 +60,8 @@ export class UserController {
     }
 
     async getUser(req: Request, res: Response) {
-        const {data} = req.params;
-        const result = await getUser.execute({data});
+        const { data } = req.params;
+        const result = await getUser.execute({ data });
         if (result.isErr()) {
             const error = result.error;
             switch (error.constructor) {
@@ -72,5 +74,25 @@ export class UserController {
             }
         }
         return response(res, result.value, StatusCode.OK);
+    }
+
+    async login(req: Request, res: Response) {
+        const { username, password } = req.body;
+        const result = await loginUser.execute({ username, password });
+
+        if (result.isErr()) {
+            const error = result.error;
+            switch (error.constructor) {
+                case UserLoginUserNotFoundError:
+                    return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name)
+                case UserLoginUserNotActiveError:
+                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
+                case UserLoginInvalidPasswordError:
+                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
+                default:
+                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
+            }
+        }
+        return response(res, result.value, StatusCode.OK)
     }
 }
