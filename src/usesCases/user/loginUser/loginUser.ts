@@ -5,6 +5,7 @@ import { LoginUserRequestDto } from "./loginUserRequestDto";
 import { IUserRepository } from "src/repositories";
 import { compare } from "src/utils/bcrypt";
 import { UserLoginInvalidPasswordError, UserLoginUserNotActiveError, UserLoginUserNotFoundError } from "./loginUserErrors";
+import { generateToken } from "src/utils/jwt";
 
 
 type Response = Result<LoginUserResponseDto, UserLoginUserNotFoundError | UserLoginUserNotActiveError | UserLoginInvalidPasswordError>;
@@ -19,7 +20,6 @@ class LoginUser implements UseCase<LoginUserRequestDto, Response>{
     async execute(request: LoginUserRequestDto, service?: any): Promise<Response> {
         try {
             const userExist = await this.userRepository.getUserByUsername(request.username);
-            
             if(!userExist){
                 return err(new UserLoginUserNotFoundError);
             }
@@ -27,13 +27,14 @@ class LoginUser implements UseCase<LoginUserRequestDto, Response>{
                 return err(new UserLoginUserNotActiveError);
                 
             }
-            const isPasswordValid = await compare(request.password, userExist.password);
+            const isPasswordValid = await compare(request.password, userExist.password!);
             if(!isPasswordValid){
                 return err(new UserLoginInvalidPasswordError);
                 
             }
 
-            return ok({token:"", timestamp:""})
+            const token = generateToken(userExist);
+            return ok(token)
         } catch (error) {
             return err(error)
         }

@@ -3,6 +3,7 @@ import { IUserDb } from "./interface";
 import { ramdonString } from "../utils";
 import { IRoleDb } from "./interface/role.interface";
 import { IUserRoleDb } from "./interface/userRole.interface";
+import { encrypt } from "src/utils/bcrypt";
 
 
 const userSchema = new Schema<IUserDb>({
@@ -32,10 +33,11 @@ const userRoleSchema = new Schema<IUserRoleDb>({
     versionKey: false
 })
 
-userSchema.pre<IUserDb>('save', function (next) {
+userSchema.pre<IUserDb>('save', async function (next) {
     if (!this.token){
         this.token = ramdonString(25);
     }
+    this.password = await encrypt(this.password);
     next();
 });
 

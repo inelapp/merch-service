@@ -1,4 +1,4 @@
 export interface LoginUserResponseDto{
     token: string;
-    timestamp: string;
+    expiresAt: number;
 }

@@ -18,9 +18,8 @@ export class UserController {
     }
 
     async createUser(req: Request, res: Response) {
-        const { password, status, username, email, token } = req.body as CreateUserRequestDto;
-        const hashedPassword = await encrypt(password)
-        const result = await createUser.execute({ password:hashedPassword, status, username, email, token });
+        const { password, status, username, email, token, roles } = req.body as CreateUserRequestDto;
+        const result = await createUser.execute({ password, status, username, email, token, roles });
 
         if (result.isErr()) {
             const error = result.error;
