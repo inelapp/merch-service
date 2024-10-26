@@ -25,7 +25,7 @@ class ConfirmUser implements UseCase<ConfirmUserRequestDto, Response> {
             if(userExist.status === 'active'){
                 return err(new UserConfirmUserAlreadyActiveError())
             }
-            const result = await this.userRepository.confirmUser(request.token, userExist.username);
+            const result = await this.userRepository.confirmUser(request.token, userExist.username!);
             //Token no valido
             if(!result){
                 return err(new UserConfirmInvalidTokenError())

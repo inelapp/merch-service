@@ -1,7 +1,7 @@
 import { IUserProps, User } from "src/domain/auth/user";
 import { IUserRepository } from "../user.repossitory";
 import { UserModel, UserRoleModel } from "src/db/mongo.schema";
-import { UserMap } from "src/mappers/userMap";
+import { IUserRoleDb, UserMap } from "src/mappers/userMap";
 import { ClientSession, connection } from "mongoose";
 
 export class UserImplRepository implements IUserRepository {
@@ -53,10 +53,12 @@ export class UserImplRepository implements IUserRepository {
         }
     }
 
-    async getUserByUsername(username: string): Promise<User | null> {
+    async getUserByUsername(username: string): Promise<Partial<User> | null> {
         try {
-            const result = await this.userModel.findOne({ username })
-            return result ? UserMap.fromDbToDomain(result) : null;
+            const user = await this.userModel.findOne({ username })
+            if(!user) return null
+            const result = await this.userRoleModel.find({userId:user?.id}).populate("userId").populate("roleId")
+            return result ? UserMap.fromDbToDomainDetail(result as unknown as IUserRoleDb[]) : null;
         } catch (error) {
             throw error;
         }

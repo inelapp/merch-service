@@ -22,13 +22,12 @@ class CreateUser implements UseCase<CreateUserRequestDto, Response> {
                 request.roles = [UserRole.USER];
             }
             const userInstanceOrError = User.create(request);
-
             //Invalid user
             if(userInstanceOrError.isErr()){
                 return err(new UserCreateBadRequestError(userInstanceOrError.error))
             }
             const existUser = await this.userRepository.getUserByUsername(userInstanceOrError.value.username);
-            
+
             //Usuario existe
             if(existUser){
                 return err(new UserCreateUserAlreadyExistError())
