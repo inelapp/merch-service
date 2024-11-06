@@ -22,7 +22,7 @@ import {
 	UserLoginUserNotActiveError,
 	UserLoginUserNotFoundError
 } from '../../../usesCases/user/loginUser/loginUserErrors';
-import { refreshTokenUser } from 'src/usesCases/user/refreshTokenUser';
+import { refreshTokenUser } from '../../../usesCases/user/refreshTokenUser';
 import {
 	UserRefreshTokenExpiredTokenError,
 	UserRefreshTokenInvalidSignatureError,
@@ -30,7 +30,7 @@ import {
 	UserRefreshTokenMalformedTokenError,
 	UserRefreshTokenMissingError,
 	UserRefreshTokenRequiredSignatureError
-} from 'src/usesCases/user/refreshTokenUser/refreshTokenUserErrors';
+} from '../../../usesCases/user/refreshTokenUser/refreshTokenUserErrors';
 
 export class UserController {
 	constructor() {

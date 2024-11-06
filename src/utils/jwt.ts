@@ -1,6 +1,6 @@
 import jwt, { Secret, JwtPayload, JsonWebTokenError } from 'jsonwebtoken';
-import { JWT_SECRET } from 'src/config';
-import { User } from 'src/domain/auth/user';
+import { JWT_SECRET } from '../config';
+import { User } from '../domain/auth/user';
 
 const SECRET_KEY: Secret = JWT_SECRET;
 const EXPIRES_IN = '1h';

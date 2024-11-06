@@ -1,5 +1,5 @@
 import { err, ok, Result } from 'neverthrow';
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 import { RefreshTokenUserResponseDto } from './refreshTokenUserResponseDto';
 import { RefreshTokenUserRequestDto } from './refreshTokenUserRequestDto';
 import { JsonWebTokenError } from 'jsonwebtoken';
