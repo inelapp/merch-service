@@ -3,6 +3,7 @@ import { UserController } from '../controllers/auth/user/user.controller';
 
 class UserRouter {
 	router: Router;
+
 	controller: UserController;
 
 	constructor() {

@@ -6,6 +6,7 @@ import { ClientSession, connection } from 'mongoose';
 
 export class UserImplRepository implements IUserRepository {
 	private readonly userModel: typeof UserModel;
+
 	private readonly userRoleModel: typeof UserRoleModel;
 
 	constructor() {
@@ -63,6 +64,7 @@ export class UserImplRepository implements IUserRepository {
 			throw error;
 		}
 	}
+
 	async getUser(request: IUserProps): Promise<User | null> {
 		try {
 			const result = await this.userModel.findOne(request);

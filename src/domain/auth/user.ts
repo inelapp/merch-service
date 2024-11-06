@@ -12,11 +12,17 @@ export interface IUserProps {
 
 export class User {
 	id: string;
+
 	username: string;
+
 	password: string;
+
 	token?: string;
+
 	email?: string;
+
 	status: string;
+
 	roles?: string[];
 
 	constructor(props: IUserProps) {
