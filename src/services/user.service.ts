@@ -1,15 +1,16 @@
-import { Router } from "express";
-import { UserController } from "src/controllers/auth/user/user.controller";
+import { Router } from 'express';
+import { UserController } from '../controllers/auth/user/user.controller';
 
 class UserRouter {
-    router: Router;
-    controller: UserController;
+	router: Router;
 
-    constructor() {
-        this.router = Router();
-        this.controller = new UserController();
-        this.routes();
-    }
+	controller: UserController;
+
+	constructor() {
+		this.router = Router();
+		this.controller = new UserController();
+		this.routes();
+	}
 
     routes() {
         this.router.route('/users')

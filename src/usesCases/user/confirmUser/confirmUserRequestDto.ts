@@ -1,4 +1,4 @@
 export interface ConfirmUserRequestDto {
-    token: string;
-    username: string;
+	token: string;
+	username: string;
 }

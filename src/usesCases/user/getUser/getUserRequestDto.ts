@@ -1,3 +1,3 @@
-export interface GetUserRequestDto{
-    data: string;
+export interface GetUserRequestDto {
+	data: string;
 }

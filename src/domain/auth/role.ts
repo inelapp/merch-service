@@ -1,4 +1,1 @@
-
-class Role {
-
-}
+class Role {}

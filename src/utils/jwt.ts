@@ -3,11 +3,11 @@ import { JWT_SECRET } from 'src/config'
 import { User } from 'src/domain/auth/user';
 
 const SECRET_KEY: Secret = JWT_SECRET;
-const EXPIRES_IN = '1h'
+const EXPIRES_IN = '1h';
 
-export interface TokenResponse{
-    token: string;
-    expiresAt: number;
+export interface TokenResponse {
+	token: string;
+	expiresAt: number;
 }
 
 function generateToken(user:Partial<User>): TokenResponse{
