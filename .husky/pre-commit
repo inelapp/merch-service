@@ -22,4 +22,4 @@ git add .
 print_green "Running build test..."
 yarn build --noEmit
 
-print_red "Pre-commit hook completed!"
+print_yellow "Pre-commit hook completed!"
