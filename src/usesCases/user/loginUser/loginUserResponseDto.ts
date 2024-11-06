@@ -1,4 +1,4 @@
-export interface LoginUserResponseDto{
-    token: string;
-    expiresAt: number;
+export interface LoginUserResponseDto {
+	token: string;
+	expiresAt: number;
 }

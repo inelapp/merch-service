@@ -1,97 +1,108 @@
-import { Request, Response } from "express";
-import { StatusCode } from "../../../types";
-import { confirmUser } from "src/usesCases/user/confirmUser";
-import { UserConfirmBadRequestError, UserConfirmInvalidTokenError, UserConfirmUserAlreadyActiveError, UserConfirmUserNotFoundError } from "src/usesCases/user/confirmUser/confirmUserErrors";
-import { createUser } from "src/usesCases/user/createUser";
-import { CreateUserRequestDto } from "src/usesCases/user/createUser/createUserRequestDto";
-import { response } from "../../../utils/response";
-import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from "src/usesCases/user/createUser/createUserErrors";
-import { getUser } from "src/usesCases/user/getUser";
-import { UserGetBadRequestError, UserGetUserNotFoundError } from "src/usesCases/user/getUser/getUserErrors";
-import { loginUser } from "src/usesCases/user/loginUser";
-import { UserLoginInvalidPasswordError, UserLoginUserNotActiveError, UserLoginUserNotFoundError } from "src/usesCases/user/loginUser/loginUserErrors";
-import { encrypt } from "src/utils/bcrypt";
+import { Request, Response } from 'express';
+import { StatusCode } from '../../../types';
+import { confirmUser } from '../../../usesCases/user/confirmUser';
+import {
+	UserConfirmBadRequestError,
+	UserConfirmInvalidTokenError,
+	UserConfirmUserAlreadyActiveError,
+	UserConfirmUserNotFoundError
+} from '../../../usesCases/user/confirmUser/confirmUserErrors';
+import { createUser } from '../../../usesCases/user/createUser';
+import { CreateUserRequestDto } from '../../../usesCases/user/createUser/createUserRequestDto';
+import { response } from '../../../utils/response';
+import {
+	UserCreateBadRequestError,
+	UserCreateUserAlreadyExistError
+} from '../../../usesCases/user/createUser/createUserErrors';
+import { getUser } from '../../../usesCases/user/getUser';
+import { UserGetBadRequestError, UserGetUserNotFoundError } from '../../../usesCases/user/getUser/getUserErrors';
+import { loginUser } from '../../../usesCases/user/loginUser';
+import {
+	UserLoginInvalidPasswordError,
+	UserLoginUserNotActiveError,
+	UserLoginUserNotFoundError
+} from '../../../usesCases/user/loginUser/loginUserErrors';
 
 export class UserController {
-    constructor() {
-        this.createUser = this.createUser.bind(this)
-    }
+	constructor() {
+		this.createUser = this.createUser.bind(this);
+	}
 
-    async createUser(req: Request, res: Response) {
-        const { password, status, username, email, token, roles } = req.body as CreateUserRequestDto;
-        const result = await createUser.execute({ password, status, username, email, token, roles });
+	async createUser(req: Request, res: Response) {
+		const { password, status, username, email, token, roles } = req.body as CreateUserRequestDto;
+		const result = await createUser.execute({ password, status, username, email, token, roles });
 
-        if (result.isErr()) {
-            const error = result.error;
-            switch (error.constructor) {
-                case UserCreateBadRequestError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
-                case UserCreateUserAlreadyExistError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
-                default:
-                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
-            }
-        }
-        return response(res, result.value, StatusCode.CREATED)
-    }
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case UserCreateBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserCreateUserAlreadyExistError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.CREATED);
+	}
 
-    async confirmUser(req: Request, res: Response) {
-        const { token } = req.params;
-        const { username } = req.body;
-        const result = await confirmUser.execute({ token, username });
+	async confirmUser(req: Request, res: Response) {
+		const { token } = req.params;
+		const { username } = req.body;
+		const result = await confirmUser.execute({ token, username });
 
-        if (result.isErr()) {
-            const error = result.error;
-            switch (error.constructor) {
-                case UserConfirmBadRequestError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                case UserConfirmInvalidTokenError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                case UserConfirmUserNotFoundError:
-                    return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name)
-                case UserConfirmUserAlreadyActiveError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                default:
-                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
-            }
-        }
-        return response(res, result.value, StatusCode.OK)
-    }
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case UserConfirmBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserConfirmInvalidTokenError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserConfirmUserNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				case UserConfirmUserAlreadyActiveError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
 
-    async getUser(req: Request, res: Response) {
-        const { data } = req.params;
-        const result = await getUser.execute({ data });
-        if (result.isErr()) {
-            const error = result.error;
-            switch (error.constructor) {
-                case UserGetBadRequestError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
-                case UserGetUserNotFoundError:
-                    return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
-                default:
-                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
-            }
-        }
-        return response(res, result.value, StatusCode.OK);
-    }
+	async getUser(req: Request, res: Response) {
+		const { data } = req.params;
+		const result = await getUser.execute({ data });
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case UserGetBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserGetUserNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
 
-    async login(req: Request, res: Response) {
-        const { username, password } = req.body;
-        const result = await loginUser.execute({ username, password });
+	async login(req: Request, res: Response) {
+		const { username, password } = req.body;
+		const result = await loginUser.execute({ username, password });
 
-        if (result.isErr()) {
-            const error = result.error;
-            switch (error.constructor) {
-                case UserLoginUserNotFoundError:
-                    return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name)
-                case UserLoginUserNotActiveError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                case UserLoginInvalidPasswordError:
-                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
-                default:
-                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
-            }
-        }
-        return response(res, result.value, StatusCode.OK)
-    }
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case UserLoginUserNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				case UserLoginUserNotActiveError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserLoginInvalidPasswordError:
+					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
 }

@@ -1,2 +1,2 @@
 export * from './UseCase';
-export * from './randomString'
+export * from './randomString';
