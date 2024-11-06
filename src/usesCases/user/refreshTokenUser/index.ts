@@ -1,4 +1,4 @@
-import RefreshTokenUser from "./refreshTokenUser";
+import RefreshTokenUser from './refreshTokenUser';
 
 const refreshTokenUser = new RefreshTokenUser();
-export{refreshTokenUser}
+export { refreshTokenUser };

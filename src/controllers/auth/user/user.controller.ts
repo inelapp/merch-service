@@ -22,14 +22,15 @@ import {
 	UserLoginUserNotActiveError,
 	UserLoginUserNotFoundError
 } from '../../../usesCases/user/loginUser/loginUserErrors';
-import { refreshTokenUser } from "src/usesCases/user/refreshTokenUser";
-import { UserRefreshTokenExpiredTokenError, 
-        UserRefreshTokenInvalidSignatureError, 
-        UserRefreshTokenInvalidTokenError, 
-        UserRefreshTokenMalformedTokenError, 
-        UserRefreshTokenMissingError, 
-        UserRefreshTokenRequiredSignatureError 
-    } from "src/usesCases/user/refreshTokenUser/refreshTokenUserErrors";
+import { refreshTokenUser } from 'src/usesCases/user/refreshTokenUser';
+import {
+	UserRefreshTokenExpiredTokenError,
+	UserRefreshTokenInvalidSignatureError,
+	UserRefreshTokenInvalidTokenError,
+	UserRefreshTokenMalformedTokenError,
+	UserRefreshTokenMissingError,
+	UserRefreshTokenRequiredSignatureError
+} from 'src/usesCases/user/refreshTokenUser/refreshTokenUserErrors';
 
 export class UserController {
 	constructor() {
@@ -109,33 +110,33 @@ export class UserController {
 					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
-            }
-        }
-        return response(res, result.value, StatusCode.OK)
-    }
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
 
-    async refreshToken(req: Request, res: Response){
-        const token = req.headers.authorization?.split(' ')[1] as string;
-        const result = await refreshTokenUser.execute({token});
+	async refreshToken(req: Request, res: Response) {
+		const token = req.headers.authorization?.split(' ')[1] as string;
+		const result = await refreshTokenUser.execute({ token });
 
-        if(result.isErr()){
-            const error = result.error;
-            switch (error.constructor) {
-                case UserRefreshTokenMissingError:
-                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
-                case UserRefreshTokenInvalidTokenError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                case UserRefreshTokenExpiredTokenError:
-                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
-                case UserRefreshTokenMalformedTokenError:
-                    return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name)
-                case UserRefreshTokenRequiredSignatureError:
-                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
-                case UserRefreshTokenInvalidSignatureError:
-                    return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name)
-                default:
-                    return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name)
-			}  
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case UserRefreshTokenMissingError:
+					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
+				case UserRefreshTokenInvalidTokenError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserRefreshTokenExpiredTokenError:
+					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
+				case UserRefreshTokenMalformedTokenError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case UserRefreshTokenRequiredSignatureError:
+					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
+				case UserRefreshTokenInvalidSignatureError:
+					return response(res, error.message, StatusCode.UNAUTHORIZED, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
 		}
 		return response(res, result.value, StatusCode.OK);
 	}

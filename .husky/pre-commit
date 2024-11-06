@@ -1,6 +1,21 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+print_green() {
+  echo -e "\033[0;32m$1\033[0m"
+}
+
+print_red() {
+  echo -e "\033[0;31m$1\033[0m"
+}
+
+print_green "Running lint checks..."
 yarn lint
 
+print_green "Changes detected, adding to commit..."
+git add .
+
+print_green "Running build test..."
 yarn build --noEmit
+
+print_red "Pre-commit hook completed!"

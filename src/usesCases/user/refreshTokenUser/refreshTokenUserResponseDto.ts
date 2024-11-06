@@ -1,4 +1,4 @@
-export interface RefreshTokenUserResponseDto{
-    token: string;
-    expiresAt: number;
+export interface RefreshTokenUserResponseDto {
+	token: string;
+	expiresAt: number;
 }
