@@ -24,7 +24,7 @@ class RefreshTokenUser implements UseCase<RefreshTokenUserRequestDto, Response> 
                     case 'invalid signature': return err(new UserRefreshTokenInvalidSignatureError())
                 }
             }
-            return ok(result);
+            return ok(result) as Response;
         } catch (error) {
             return err(error);
         }
