@@ -7,7 +7,7 @@ import { IUserRepository } from '../../../repositories';
 import { UserCreateBadRequestError, UserCreateUserAlreadyExistError } from './createUserErrors';
 import { UserRole } from '../../../types';
 
-type Response = Result<CreateUserResponseDto | UserCreateBadRequestError, UserCreateUserAlreadyExistError>;
+type Response = Result<CreateUserResponseDto, UserCreateBadRequestError | UserCreateUserAlreadyExistError>;
 
 class CreateUser implements UseCase<CreateUserRequestDto, Response> {
 	private readonly userRepository: IUserRepository;
