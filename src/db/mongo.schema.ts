@@ -51,7 +51,7 @@ const vehicleSchema = new Schema<IVehicleDb>(
 		category: { type: String, required: true, trim: true },
 		licensePlate: { type: String, required: true, trim: true },
 		registrationDate: { type: Date, required: true, trim: true },
-		notes: { type: String, required: true, trim: true },
+		notes: { type: String, trim: true },
 		ownerId: { type: Schema.Types.ObjectId, ref: 'Owner', required: true }
 	},
 	{

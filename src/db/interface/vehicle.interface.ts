@@ -8,6 +8,6 @@ export interface IVehicleDb {
 	category: string;
 	licensePlate: string;
 	registrationDate: Date;
-	notes: string;
+	notes?: string;
 	ownerId: String | Schema.Types.ObjectId | null;
 }
