@@ -4,7 +4,7 @@ export interface IVehicleDb {
 	_id: string | Schema.Types.ObjectId;
 	make: string;
 	model: string;
-	year: Date;
+	year: number;
 	category: string;
 	licensePlate: string;
 	registrationDate: Date;
