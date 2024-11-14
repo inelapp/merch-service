@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { StatusCode } from 'src/types';
 import { createVehicle } from 'src/usesCases/vehicle/createVehicle';
-import { VehicleCreateBadRequestError } from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
+import {
+	VehicleAlreadyRegisteredError,
+	VehicleCreateBadRequestError
+} from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
 
 import { CreateVehicleRequestDto } from 'src/usesCases/vehicle/createVehicle/createVehicleRequestDto';
 import { response } from 'src/utils/response';
@@ -30,6 +33,8 @@ export class VehicleController {
 			const error = result.error;
 			switch (error.constructor) {
 				case VehicleCreateBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case VehicleAlreadyRegisteredError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
