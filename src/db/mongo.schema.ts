@@ -5,7 +5,6 @@ import { IRoleDb } from './interface/role.interface';
 import { IUserRoleDb } from './interface/userRole.interface';
 import { encrypt } from '../utils/bcrypt';
 import { IVehicleDb } from './interface/vehicle.interface';
-import { number, string } from 'joi';
 
 const userSchema = new Schema<IUserDb>(
 	{
@@ -49,10 +48,10 @@ const vehicleSchema = new Schema<IVehicleDb>(
 		model: { type: String, required: true, trim: true },
 		year: { type: Number, required: true, trim: true },
 		category: { type: String, required: true, trim: true },
-		licensePlate: { type: String, required: true, trim: true },
+		licensePlate: { type: String, required: true, trim: true, unique: true },
 		registrationDate: { type: Date, required: true, trim: true },
 		notes: { type: String, trim: true },
-		ownerId: { type: Schema.Types.ObjectId, ref: 'Owner', required: true }
+		ownerId: { type: Schema.Types.ObjectId, ref: 'Owner' }
 	},
 	{
 		timestamps: true,
@@ -73,4 +72,4 @@ const RoleModel = model<IRoleDb>('Role', roleSchema, 'roles');
 const UserRoleModel = model<IUserRoleDb>('UserRole', userRoleSchema, 'user_role');
 const VehicleModel = model<IVehicleDb>('Vehicle', vehicleSchema, 'vehicles');
 
-export { UserModel, RoleModel, UserRoleModel };
+export { UserModel, RoleModel, UserRoleModel, VehicleModel };

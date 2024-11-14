@@ -8,8 +8,8 @@ export interface IVehicleProps {
 	category: string;
 	licensePlate: string;
 	registrationDate: Date;
-	notes?: string;
-	ownerId: String;
+	notes?: string | null;
+	ownerId: string | null;
 }
 
 export class Vehicle {
@@ -27,15 +27,15 @@ export class Vehicle {
 
 	registrationDate: Date;
 
-	notes?: string;
+	notes: string | null;
 
-	ownerId: String | null;
+	ownerId: string | null;
 
 	constructor(props: IVehicleProps) {
 		Object.assign(this, props);
 	}
 
-	static create(props: IVehicleProps): Result<Vehicle, String> {
+	static create(props: IVehicleProps): Result<Vehicle, string> {
 		const { error } = validateVehicleSchema(props);
 		if (error) {
 			const vehicleError = error.details.map((error) => error.message).join('. ');
