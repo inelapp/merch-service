@@ -68,15 +68,16 @@ export class VehicleController {
 	}
 
 	async deleteVehicle(req: Request, res: Response) {
-		const { id } = req.body as DeleteVehicleRequestDto;
+		const { id } = req.params as unknown as DeleteVehicleRequestDto;
 		const result = await deleteVehicle.execute({ id });
+
 		if (result.isErr()) {
 			const error = result.error;
 			switch (error.constructor) {
 				case VehicleDeleteBadRequestError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				case VehicleNotFoundError:
-					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 			}

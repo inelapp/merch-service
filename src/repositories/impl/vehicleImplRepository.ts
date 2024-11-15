@@ -34,35 +34,27 @@ export class VehicleImplRepository implements IVehicleRepository {
 			const vehicles = await this.vehicleModel.find();
 			return vehicles.map((vehicle) => VehicleMap.fromDbToDomain(vehicle));
 		} catch (error) {
-			throw new Error('Method not implemented.');
+			throw error;
 		}
 	}
 
 	async createVehicle(request: IVehicleProps): Promise<Vehicle> {
-		const session = await connection.startSession();
 		try {
-			return await session.withTransaction(async (session: ClientSession) => {
-				// Crear el nuevo vehículo
-				const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } = request;
-				const newVehicle = new this.vehicleModel({
-					make,
-					model,
-					year,
-					category,
-					licensePlate,
-					registrationDate,
-					notes,
-					ownerId
-				});
-				await newVehicle.save({ session });
-				await session.commitTransaction();
-				return VehicleMap.fromDbToDomain(newVehicle);
+			const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } = request;
+			const newVehicle = new this.vehicleModel({
+				make,
+				model,
+				year,
+				category,
+				licensePlate,
+				registrationDate,
+				notes,
+				ownerId
 			});
+			await newVehicle.save();
+			return VehicleMap.fromDbToDomain(newVehicle);
 		} catch (error) {
-			console.log(error);
 			throw error;
-		} finally {
-			session.endSession();
 		}
 	}
 
@@ -82,17 +74,11 @@ export class VehicleImplRepository implements IVehicleRepository {
 	}
 
 	async deleteVehicle(id: string): Promise<boolean> {
-		const session = await connection.startSession();
-		session.startTransaction();
 		try {
-			const result = await this.vehicleModel.findByIdAndDelete(id, { session });
-			await session.commitTransaction();
+			const result = await this.vehicleModel.findByIdAndDelete(id);
 			return result != null;
 		} catch (error) {
-			await session.abortTransaction();
 			throw error;
-		} finally {
-			session.endSession();
 		}
 	}
 }
