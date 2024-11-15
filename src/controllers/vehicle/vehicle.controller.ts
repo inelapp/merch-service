@@ -9,6 +9,7 @@ import {
 
 import { CreateVehicleRequestDto } from 'src/usesCases/vehicle/createVehicle/createVehicleRequestDto';
 import { response } from 'src/utils/response';
+import { GetVehicleBadRequestError } from '../../usesCases/vehicle/getAllVehicles/getAllVehiclesErrors';
 
 export class VehicleController {
 	constructor() {
@@ -57,6 +58,7 @@ export class VehicleController {
 						return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 				}
 			}
+			return response(res, result.value, StatusCode.CREATED);
 		} catch (error) {}
 	}
 }

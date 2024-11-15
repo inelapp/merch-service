@@ -14,6 +14,7 @@ class VehicleRouter {
 
 	routes() {
 		this.router.route('/vehicle/create').post(this.controller.createVehicle.bind(this.controller));
+		this.router.route('/vehicles').get(this.controller.getAllVehicles.bind(this.controller));
 	}
 }
 

@@ -1,7 +1,7 @@
 import { IVehicleProps, Vehicle } from 'src/domain/vehicle/vehicle';
 import { IVehicleRepository } from '../vehicle.repository';
 import { VehicleModel } from '../../db/mongo.schema';
-import { connection } from 'mongoose';
+import { ClientSession, connection } from 'mongoose';
 import { VehicleMap } from 'src/mappers/vehicleMap';
 
 export class VehicleImplRepository implements IVehicleRepository {
@@ -40,31 +40,26 @@ export class VehicleImplRepository implements IVehicleRepository {
 
 	async createVehicle(request: IVehicleProps): Promise<Vehicle> {
 		const session = await connection.startSession();
-		session.startTransaction();
 		try {
-			// Verificar si el número de placa ya existe
-			const existingVehicle = await this.getVehicleByLicensePlate(request.licensePlate);
-			if (existingVehicle) {
-				throw new Error('Vehicle with this license plate already exists.');
-			}
-
-			// Crear el nuevo vehículo
-			const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } = request;
-			const newVehicle = new this.vehicleModel({
-				make,
-				model,
-				year,
-				category,
-				licensePlate,
-				registrationDate,
-				notes,
-				ownerId
+			return await session.withTransaction(async (session: ClientSession) => {
+				// Crear el nuevo vehículo
+				const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } = request;
+				const newVehicle = new this.vehicleModel({
+					make,
+					model,
+					year,
+					category,
+					licensePlate,
+					registrationDate,
+					notes,
+					ownerId
+				});
+				await newVehicle.save({ session });
+				await session.commitTransaction();
+				return VehicleMap.fromDbToDomain(newVehicle);
 			});
-			await newVehicle.save({ session });
-			await session.commitTransaction();
-			return VehicleMap.fromDbToDomain(newVehicle);
 		} catch (error) {
-			await session.abortTransaction();
+			console.log(error);
 			throw error;
 		} finally {
 			session.endSession();

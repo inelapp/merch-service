@@ -4,6 +4,7 @@ import { err, ok, Result } from 'neverthrow';
 import { GetAllVehicleRequestDto } from './getAllVehiclesRequestDto';
 import { GetAllVehiclesResponseDto } from './getAllVehiclesResponse';
 import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { GetVehicleBadRequestError } from './getAllVehiclesErrors';
 
 type Response = Result<GetAllVehiclesResponseDto[], GetVehicleBadRequestError>;
 
