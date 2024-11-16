@@ -54,4 +54,46 @@ export class RepairLogImplRepository implements IRepairLogRepository {
 			throw error;
 		}
 	}
+
+	async updateRepairLog(request: IRepairLogProps): Promise<RepairLog | null> {
+		try {
+			const {
+				id,
+				vehicle,
+				repairNumber,
+				technicalReview,
+				observation,
+				subTotal,
+				discount,
+				total,
+				paymentType,
+				repairStatus
+			} = request;
+
+			const repairLog = await this.repairLogModel.findById(id);
+
+			if (!repairLog) {
+				return null;
+			}
+
+			const updatedRepairLog = await this.repairLogModel.findByIdAndUpdate(
+				id,
+				{
+					vehicle,
+					repairNumber,
+					technicalReview,
+					observation,
+					subTotal,
+					discount,
+					total,
+					paymentType,
+					repairStatus
+				},
+				{ new: true }
+			);
+			return RepairLogMap.fromDbToDomain(updatedRepairLog!);
+		} catch (error) {
+			throw error;
+		}
+	}
 }

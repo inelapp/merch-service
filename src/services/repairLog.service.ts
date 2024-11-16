@@ -15,6 +15,7 @@ class RepairLogRouter {
 	routes() {
 		this.router.post('/repair', this.controller.createRepairLog.bind(this.controller));
 		this.router.get('/repair', this.controller.getRepairLog.bind(this.controller));
+		this.router.put('/repair', this.controller.updateRepairLog.bind(this.controller));
 	}
 }
 

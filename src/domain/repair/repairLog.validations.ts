@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { IRepairLogProps } from './repairLog';
 
 const repairLogSchema = Joi.object<IRepairLogProps>({
+	id: Joi.string().optional(),
 	vehicle: Joi.string().required(),
 	repairNumber: Joi.string().required(),
 	technicalReview: Joi.string().optional(),

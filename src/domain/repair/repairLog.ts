@@ -2,6 +2,7 @@ import { err, ok, Result } from 'neverthrow';
 import { validateRapirLogSchema } from './repairLog.validations';
 
 export interface IRepairLogProps {
+	id?: string;
 	vehicle: string;
 	repairNumber: string;
 	technicalReview?: string;

@@ -9,6 +9,13 @@ import {
 	RepairLogGetLimitConvertionError,
 	RepairLogGetPageConvertionError
 } from 'src/usesCases/repairLog/getRepairLog/getRepairLogErrors';
+import { UpdateRepairLogRequestDto } from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogRequestDto';
+import { updateRepairLog } from 'src/usesCases/repairLog/updateRepairLog';
+import {
+	RepairLogUpdateBadRequestError,
+	RepairLogUpdateInvalidIdError,
+	RepairLogUpdateLogNotFoundError
+} from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogErrors';
 
 export class RepairLogController {
 	constructor() {
@@ -45,6 +52,26 @@ export class RepairLogController {
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				case RepairLogGetLimitConvertionError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
+
+	async updateRepairLog(req: Request, res: Response) {
+		const repairLog = req.body as UpdateRepairLogRequestDto;
+		const result = await updateRepairLog.execute(repairLog);
+
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case RepairLogUpdateBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case RepairLogUpdateInvalidIdError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case RepairLogUpdateLogNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 			}
