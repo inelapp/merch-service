@@ -16,6 +16,12 @@ import {
 	VehicleDeleteBadRequestError,
 	VehicleNotFoundError
 } from 'src/usesCases/vehicle/deleteVehicle/deleteVehicleErrors';
+import { UpdateVehicleRequestDto } from 'src/usesCases/vehicle/updateVehicle/updateVehicleRequestDto';
+import { updateVehicle } from 'src/usesCases/vehicle/updateVehicle';
+import {
+	VehicleUpdateBadRequestError,
+	VehicleUpdateNotFoundError
+} from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export class VehicleController {
 	constructor() {
@@ -78,6 +84,24 @@ export class VehicleController {
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				case VehicleNotFoundError:
 					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
+
+	async updateVehicle(req: Request, res: Response) {
+		const { id } = req.params;
+		const updateData = req.body;
+		const result = await updateVehicle.execute({ id, updateData });
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case VehicleNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				case VehicleUpdateBadRequestError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 			}

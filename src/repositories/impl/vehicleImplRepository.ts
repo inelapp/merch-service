@@ -3,6 +3,7 @@ import { IVehicleRepository } from '../vehicle.repository';
 import { VehicleModel } from '../../db/mongo.schema';
 import { ClientSession, connection } from 'mongoose';
 import { VehicleMap } from 'src/mappers/vehicleMap';
+import { VehicleAlreadyRegisteredError } from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
 
 export class VehicleImplRepository implements IVehicleRepository {
 	private readonly vehicleModel: typeof VehicleModel;
@@ -59,17 +60,25 @@ export class VehicleImplRepository implements IVehicleRepository {
 	}
 
 	async updateVehicle(id: string, update: Partial<IVehicleProps>): Promise<Vehicle | null> {
-		const session = await connection.startSession();
-		session.startTransaction();
 		try {
-			const updatedVehicle = await this.vehicleModel.findByIdAndUpdate(id, update, { new: true, session });
-			await session.commitTransaction();
+			// Verifica si se intenta actualizar el `licensePlate`
+			if (update.licensePlate) {
+				const existingVehicle = await this.vehicleModel.findOne({
+					licensePlate: update.licensePlate,
+					_id: { $ne: id } // Excluir el vehículo actual
+				});
+				if (existingVehicle) {
+					throw new Error(`The license plate "${update.licensePlate}" is already assigned to another vehicle.`);
+				}
+			}
+			// Realiza la actualización
+			const updatedVehicle = await this.vehicleModel.findByIdAndUpdate(id, update, { new: true });
 			return updatedVehicle ? VehicleMap.fromDbToDomain(updatedVehicle) : null;
 		} catch (error) {
-			await session.abortTransaction();
+			if (error.message.includes('license plate')) {
+				throw new VehicleAlreadyRegisteredError(); // Error personalizado
+			}
 			throw error;
-		} finally {
-			session.endSession();
 		}
 	}
 
