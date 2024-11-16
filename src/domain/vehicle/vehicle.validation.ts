@@ -16,4 +16,12 @@ const validateVehicleSchema = (vehicle: IVehicleProps): Joi.ValidationResult<IVe
 	return vehicleSchema.validate(vehicle, { abortEarly: false });
 };
 
-export { validateVehicleSchema };
+const updateVehicleSchema = vehicleSchema.fork(Object.keys(vehicleSchema.describe().keys), (schema) =>
+	schema.optional()
+);
+
+const validateUpdateVehicleSchema = (update: Partial<IVehicleProps>): Joi.ValidationResult<Partial<IVehicleProps>> => {
+	return updateVehicleSchema.validate(update, { abortEarly: false });
+};
+
+export { validateVehicleSchema, validateUpdateVehicleSchema };

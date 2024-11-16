@@ -1,5 +1,6 @@
 import { ok, err, Result } from 'neverthrow';
-import { validateVehicleSchema } from './vehicle.validation';
+import { validateUpdateVehicleSchema, validateVehicleSchema } from './vehicle.validation';
+import { VehicleUpdateBadRequestError } from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export interface IVehicleProps {
 	make: string;
@@ -37,6 +38,15 @@ export class Vehicle {
 
 	static create(props: IVehicleProps): Result<Vehicle, string> {
 		const { error } = validateVehicleSchema(props);
+		if (error) {
+			const vehicleError = error.details.map((error) => error.message).join('. ');
+			return err(vehicleError);
+		}
+		return ok(new Vehicle(props));
+	}
+
+	static update(props: IVehicleProps): Result<Vehicle, string> {
+		const { error } = validateUpdateVehicleSchema(props);
 		if (error) {
 			const vehicleError = error.details.map((error) => error.message).join('. ');
 			return err(vehicleError);

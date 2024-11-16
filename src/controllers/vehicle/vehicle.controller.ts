@@ -92,9 +92,14 @@ export class VehicleController {
 	}
 
 	async updateVehicle(req: Request, res: Response) {
-		const { id } = req.params;
-		const updateData = req.body;
-		const result = await updateVehicle.execute({ id, updateData });
+		// Combina el ID de la URL con el cuerpo del request
+		const updateRequest: UpdateVehicleRequestDto = {
+			id: req.params.id,
+			...req.body
+		};
+
+		const result = await updateVehicle.execute(updateRequest);
+
 		if (result.isErr()) {
 			const error = result.error;
 			switch (error.constructor) {
@@ -106,6 +111,7 @@ export class VehicleController {
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 			}
 		}
+
 		return response(res, result.value, StatusCode.OK);
 	}
 }
