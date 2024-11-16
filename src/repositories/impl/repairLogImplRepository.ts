@@ -41,4 +41,17 @@ export class RepairLogImplRepository implements IRepairLogRepository {
 			throw error;
 		}
 	}
+
+	async getRepairLog(page: number, limit: number, filters?: any): Promise<RepairLog[]> {
+		try {
+			console.log(page, limit, filters);
+			const repairLogList = await this.repairLogModel
+				.find(filters)
+				.skip((page - 1) * limit)
+				.limit(limit);
+			return repairLogList.map((e) => RepairLogMap.fromDbToDomain(e));
+		} catch (error) {
+			throw error;
+		}
+	}
 }
