@@ -27,7 +27,7 @@ class DeleteRepairLog implements UseCase<DeleteRepairLogRequest, Response> {
 				return err(new RepairLogDeleteLogNotFoundError());
 			}
 
-			return ok({ message: 'Resource successfully deleted' });
+			return ok({ message: 'Repair log successfully deleted' });
 		} catch (error) {
 			return err(error);
 		}
