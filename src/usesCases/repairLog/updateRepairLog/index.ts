@@ -1,6 +1,6 @@
-import { repairLogRepository } from 'src/repositories';
+import { repairLogRepository, vehicleRepository } from 'src/repositories';
 import UpdateRepairLog from './updateRepairLog';
 
-const updateRepairLog = new UpdateRepairLog(repairLogRepository);
+const updateRepairLog = new UpdateRepairLog(repairLogRepository, vehicleRepository);
 
 export { updateRepairLog };

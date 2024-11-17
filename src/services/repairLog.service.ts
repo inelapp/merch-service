@@ -13,9 +13,11 @@ class RepairLogRouter {
 	}
 
 	routes() {
-		this.router.post('/repair', this.controller.createRepairLog.bind(this.controller));
-		this.router.get('/repair', this.controller.getRepairLog.bind(this.controller));
-		this.router.put('/repair', this.controller.updateRepairLog.bind(this.controller));
+		this.router
+			.route('/repair')
+			.post(this.controller.createRepairLog.bind(this.controller))
+			.get(this.controller.getRepairLog.bind(this.controller))
+			.put(this.controller.updateRepairLog.bind(this.controller));
 		this.router.delete('/repair/:id', this.controller.deleteRepairLog.bind(this.controller));
 	}
 }

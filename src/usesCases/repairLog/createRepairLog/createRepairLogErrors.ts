@@ -8,5 +8,14 @@ class RepairLogCreateVehicleInvalidObjectIdError extends Error {
 		super('Invalid object id');
 	}
 }
+class RepairLogCreateVehicleNotFoundError extends Error {
+	constructor() {
+		super('Vehicle not found');
+	}
+}
 
-export { RepairLogCreateBadRequestError, RepairLogCreateVehicleInvalidObjectIdError };
+export {
+	RepairLogCreateBadRequestError,
+	RepairLogCreateVehicleInvalidObjectIdError,
+	RepairLogCreateVehicleNotFoundError
+};

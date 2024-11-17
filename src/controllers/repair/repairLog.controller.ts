@@ -2,7 +2,11 @@ import { Request, Response } from 'express';
 import { StatusCode } from 'src/types';
 import { response } from '../../utils/response';
 import { createRepairLog } from 'src/usesCases/repairLog/createRepairLog';
-import { RepairLogCreateBadRequestError } from 'src/usesCases/repairLog/createRepairLog/createRepairLogErrors';
+import {
+	RepairLogCreateBadRequestError,
+	RepairLogCreateVehicleInvalidObjectIdError,
+	RepairLogCreateVehicleNotFoundError
+} from 'src/usesCases/repairLog/createRepairLog/createRepairLogErrors';
 import { CreateRepairLogRequestDto } from 'src/usesCases/repairLog/createRepairLog/createRepairLogRequestDto';
 import { getRepairLog } from 'src/usesCases/repairLog/getRepairLog';
 import {
@@ -14,7 +18,8 @@ import { updateRepairLog } from 'src/usesCases/repairLog/updateRepairLog';
 import {
 	RepairLogUpdateBadRequestError,
 	RepairLogUpdateInvalidIdError,
-	RepairLogUpdateLogNotFoundError
+	RepairLogUpdateLogNotFoundError,
+	RepairLogUpdateVehicleNotFoundError
 } from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogErrors';
 import { deleteRepairLog } from 'src/usesCases/repairLog/deleteRepairLog';
 import {
@@ -36,6 +41,10 @@ export class RepairLogController {
 			switch (error.constructor) {
 				case RepairLogCreateBadRequestError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case RepairLogCreateVehicleInvalidObjectIdError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case RepairLogCreateVehicleNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
 			}
@@ -76,6 +85,8 @@ export class RepairLogController {
 				case RepairLogUpdateInvalidIdError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				case RepairLogUpdateLogNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				case RepairLogUpdateVehicleNotFoundError:
 					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);

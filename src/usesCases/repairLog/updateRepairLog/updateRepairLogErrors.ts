@@ -13,5 +13,15 @@ class RepairLogUpdateInvalidIdError extends Error {
 		super('Invalid id');
 	}
 }
+class RepairLogUpdateVehicleNotFoundError extends Error {
+	constructor() {
+		super('Vehicle not found');
+	}
+}
 
-export { RepairLogUpdateBadRequestError, RepairLogUpdateLogNotFoundError, RepairLogUpdateInvalidIdError };
+export {
+	RepairLogUpdateBadRequestError,
+	RepairLogUpdateLogNotFoundError,
+	RepairLogUpdateInvalidIdError,
+	RepairLogUpdateVehicleNotFoundError
+};
