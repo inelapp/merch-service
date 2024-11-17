@@ -3,5 +3,10 @@ class RepairLogCreateBadRequestError extends Error {
 		super(message);
 	}
 }
+class RepairLogCreateVehicleInvalidObjectIdError extends Error {
+	constructor() {
+		super('Invalid object id');
+	}
+}
 
-export { RepairLogCreateBadRequestError };
+export { RepairLogCreateBadRequestError, RepairLogCreateVehicleInvalidObjectIdError };

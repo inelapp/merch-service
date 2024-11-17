@@ -96,4 +96,13 @@ export class RepairLogImplRepository implements IRepairLogRepository {
 			throw error;
 		}
 	}
+
+	async deleteRepairLog(id: string): Promise<boolean> {
+		try {
+			const result = await this.repairLogModel.deleteOne({ _id: id });
+			return result.deletedCount > 0;
+		} catch (error) {
+			throw error;
+		}
+	}
 }

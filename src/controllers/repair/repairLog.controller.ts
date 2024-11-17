@@ -16,6 +16,11 @@ import {
 	RepairLogUpdateInvalidIdError,
 	RepairLogUpdateLogNotFoundError
 } from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogErrors';
+import { deleteRepairLog } from 'src/usesCases/repairLog/deleteRepairLog';
+import {
+	RepairLogDeleteInvalidIdError,
+	RepairLogDeleteLogNotFoundError
+} from 'src/usesCases/repairLog/deleteRepairLog/deleteRepairLogErrors';
 
 export class RepairLogController {
 	constructor() {
@@ -71,6 +76,24 @@ export class RepairLogController {
 				case RepairLogUpdateInvalidIdError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
 				case RepairLogUpdateLogNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
+	}
+
+	async deleteRepairLog(req: Request, res: Response) {
+		const { id } = req.params;
+		const result = await deleteRepairLog.execute({ id });
+
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case RepairLogDeleteInvalidIdError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case RepairLogDeleteLogNotFoundError:
 					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				default:
 					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
