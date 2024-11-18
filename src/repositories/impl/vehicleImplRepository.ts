@@ -4,6 +4,7 @@ import { VehicleModel } from '../../db/mongo.schema';
 import { ClientSession, connection } from 'mongoose';
 import { VehicleMap } from 'src/mappers/vehicleMap';
 import { VehicleAlreadyRegisteredError } from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
+import { VehicleUpdateLicensePlateAlreadyAssigned } from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export class VehicleImplRepository implements IVehicleRepository {
 	private readonly vehicleModel: typeof VehicleModel;
@@ -68,7 +69,7 @@ export class VehicleImplRepository implements IVehicleRepository {
 					_id: { $ne: id } // Excluir el vehículo actual
 				});
 				if (existingVehicle) {
-					throw new Error(`The license plate "${update.licensePlate}" is already assigned to another vehicle.`);
+					throw new VehicleUpdateLicensePlateAlreadyAssigned();
 				}
 			}
 			// Realiza la actualización
@@ -76,7 +77,7 @@ export class VehicleImplRepository implements IVehicleRepository {
 			return updatedVehicle ? VehicleMap.fromDbToDomain(updatedVehicle) : null;
 		} catch (error) {
 			if (error.message.includes('license plate')) {
-				throw new VehicleAlreadyRegisteredError(); // Error personalizado
+				throw new VehicleUpdateLicensePlateAlreadyAssigned(); // Error personalizado
 			}
 			throw error;
 		}

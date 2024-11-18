@@ -20,6 +20,8 @@ import { UpdateVehicleRequestDto } from 'src/usesCases/vehicle/updateVehicle/upd
 import { updateVehicle } from 'src/usesCases/vehicle/updateVehicle';
 import {
 	VehicleUpdateBadRequestError,
+	VehicleUpdateIdNotValidError,
+	VehicleUpdateLicensePlateAlreadyAssigned,
 	VehicleUpdateNotFoundError
 } from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
@@ -103,7 +105,11 @@ export class VehicleController {
 		if (result.isErr()) {
 			const error = result.error;
 			switch (error.constructor) {
-				case VehicleNotFoundError:
+				case VehicleUpdateLicensePlateAlreadyAssigned:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case VehicleUpdateIdNotValidError:
+					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);
+				case VehicleUpdateNotFoundError:
 					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
 				case VehicleUpdateBadRequestError:
 					return response(res, error.message, StatusCode.BAD_REQUEST, error.constructor.name);

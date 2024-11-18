@@ -10,10 +10,21 @@ class VehicleUpdateIdNotValidError extends Error {
 	}
 }
 
+class VehicleUpdateLicensePlateAlreadyAssigned extends Error {
+	constructor() {
+		super('The license plate is already assigned to another vehicle.');
+	}
+}
+
 class VehicleUpdateBadRequestError extends Error {
 	constructor(message: string) {
 		super(message);
 	}
 }
 
-export { VehicleUpdateNotFoundError, VehicleUpdateBadRequestError, VehicleUpdateIdNotValidError };
+export {
+	VehicleUpdateNotFoundError,
+	VehicleUpdateBadRequestError,
+	VehicleUpdateIdNotValidError,
+	VehicleUpdateLicensePlateAlreadyAssigned
+};
