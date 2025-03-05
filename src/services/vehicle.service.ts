@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { VehicleController } from 'src/controllers/vehicle/vehicle.controller';
+import { VehicleController } from '../controllers/vehicle/vehicle.controller';
 
 class VehicleRouter {
 	router: Router;

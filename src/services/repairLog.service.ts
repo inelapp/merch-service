@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { RepairLogController } from 'src/controllers/repair/repairLog.controller';
+import { RepairLogController } from '../controllers/repair/repairLog.controller';
 
 class RepairLogRouter {
 	router: Router;

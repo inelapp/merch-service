@@ -1,8 +1,8 @@
 import { err, ok, Result } from 'neverthrow';
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 import { GetRepairLogResponseDTO } from './getRepairLogResponseDto';
 import { GetRepairLogRequestDTO } from './getRepairLogRequestDto';
-import { IRepairLogRepository } from 'src/repositories';
+import { IRepairLogRepository } from '../../../repositories';
 import { RepairLogGetLimitConvertionError, RepairLogGetPageConvertionError } from './getRepairLogErrors';
 
 interface IFilter {

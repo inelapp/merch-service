@@ -6,12 +6,12 @@ import {
 	RepairLogUpdateLogNotFoundError,
 	RepairLogUpdateVehicleNotFoundError
 } from './updateRepairLogErrors';
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 import { UpdateRepairLogRequestDto } from './updateRepairLogRequestDto';
-import { IRepairLogRepository } from 'src/repositories';
-import { RepairLog } from 'src/domain/repair/repairLog';
+import { IRepairLogRepository } from '../../../repositories';
+import { RepairLog } from '../../../domain/repair/repairLog';
 import { isValidObjectId } from 'mongoose';
-import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { IVehicleRepository } from '../../../repositories/vehicle.repository';
 
 type Response = Result<
 	UpdateRepairLogResponseDto,

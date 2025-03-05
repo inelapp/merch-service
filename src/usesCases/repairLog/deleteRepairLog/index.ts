@@ -1,5 +1,5 @@
 import DeleteRepairLog from './deleteRepairLog';
-import { repairLogRepository } from 'src/repositories';
+import { repairLogRepository } from '../../../repositories';
 
 const deleteRepairLog = new DeleteRepairLog(repairLogRepository);
 

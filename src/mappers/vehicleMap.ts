@@ -1,5 +1,5 @@
-import { IVehicleDb } from 'src/db/interface/vehicle.interface';
-import { Vehicle } from 'src/domain/vehicle/vehicle';
+import { IVehicleDb } from '../db/interface/vehicle.interface';
+import { Vehicle } from '../domain/vehicle/vehicle';
 
 export class VehicleMap {
 	static fromDbToDomain(vehicle: IVehicleDb): Vehicle {

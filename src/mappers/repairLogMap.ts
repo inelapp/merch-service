@@ -1,5 +1,5 @@
-import { IRepairLogDb } from 'src/db/interface/repairLog.interface';
-import { RepairLog } from 'src/domain/repair/repairLog';
+import { IRepairLogDb } from '../db/interface/repairLog.interface';
+import { RepairLog } from '../domain/repair/repairLog';
 
 export class RepairLogMap {
 	static fromDbToDomain(repairLog: IRepairLogDb): RepairLog {

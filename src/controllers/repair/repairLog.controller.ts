@@ -1,31 +1,31 @@
 import { Request, Response } from 'express';
-import { StatusCode } from 'src/types';
+import { StatusCode } from '../../types';
 import { response } from '../../utils/response';
-import { createRepairLog } from 'src/usesCases/repairLog/createRepairLog';
+import { createRepairLog } from '../../usesCases/repairLog/createRepairLog';
 import {
 	RepairLogCreateBadRequestError,
 	RepairLogCreateVehicleInvalidObjectIdError,
 	RepairLogCreateVehicleNotFoundError
-} from 'src/usesCases/repairLog/createRepairLog/createRepairLogErrors';
-import { CreateRepairLogRequestDto } from 'src/usesCases/repairLog/createRepairLog/createRepairLogRequestDto';
-import { getRepairLog } from 'src/usesCases/repairLog/getRepairLog';
+} from '../../usesCases/repairLog/createRepairLog/createRepairLogErrors';
+import { CreateRepairLogRequestDto } from '../../usesCases/repairLog/createRepairLog/createRepairLogRequestDto';
+import { getRepairLog } from '../../usesCases/repairLog/getRepairLog';
 import {
 	RepairLogGetLimitConvertionError,
 	RepairLogGetPageConvertionError
-} from 'src/usesCases/repairLog/getRepairLog/getRepairLogErrors';
-import { UpdateRepairLogRequestDto } from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogRequestDto';
-import { updateRepairLog } from 'src/usesCases/repairLog/updateRepairLog';
+} from '../../usesCases/repairLog/getRepairLog/getRepairLogErrors';
+import { UpdateRepairLogRequestDto } from '../../usesCases/repairLog/updateRepairLog/updateRepairLogRequestDto';
+import { updateRepairLog } from '../../usesCases/repairLog/updateRepairLog';
 import {
 	RepairLogUpdateBadRequestError,
 	RepairLogUpdateInvalidIdError,
 	RepairLogUpdateLogNotFoundError,
 	RepairLogUpdateVehicleNotFoundError
-} from 'src/usesCases/repairLog/updateRepairLog/updateRepairLogErrors';
-import { deleteRepairLog } from 'src/usesCases/repairLog/deleteRepairLog';
+} from '../../usesCases/repairLog/updateRepairLog/updateRepairLogErrors';
+import { deleteRepairLog } from '../../usesCases/repairLog/deleteRepairLog';
 import {
 	RepairLogDeleteInvalidIdError,
 	RepairLogDeleteLogNotFoundError
-} from 'src/usesCases/repairLog/deleteRepairLog/deleteRepairLogErrors';
+} from '../../usesCases/repairLog/deleteRepairLog/deleteRepairLogErrors';
 
 export class RepairLogController {
 	constructor() {

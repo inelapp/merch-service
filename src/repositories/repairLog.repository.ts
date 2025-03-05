@@ -1,4 +1,4 @@
-import { IRepairLogProps, RepairLog } from 'src/domain/repair/repairLog';
+import { IRepairLogProps, RepairLog } from '../domain/repair/repairLog';
 
 export interface IRepairLogRepository {
 	createRepairLog(request: IRepairLogProps): Promise<RepairLog>;

@@ -1,10 +1,8 @@
-import { IVehicleProps, Vehicle } from 'src/domain/vehicle/vehicle';
+import { IVehicleProps, Vehicle } from '../../domain/vehicle/vehicle';
 import { IVehicleRepository } from '../vehicle.repository';
 import { VehicleModel } from '../../db/mongo.schema';
-import { ClientSession, connection } from 'mongoose';
-import { VehicleMap } from 'src/mappers/vehicleMap';
-import { VehicleAlreadyRegisteredError } from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
-import { VehicleUpdateLicensePlateAlreadyAssigned } from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
+import { VehicleMap } from '../../mappers/vehicleMap';
+import { VehicleUpdateLicensePlateAlreadyAssigned } from '../../usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export class VehicleImplRepository implements IVehicleRepository {
 	private readonly vehicleModel: typeof VehicleModel;

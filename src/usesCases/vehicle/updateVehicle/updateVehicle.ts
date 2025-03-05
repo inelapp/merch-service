@@ -7,9 +7,9 @@ import {
 	VehicleUpdateBadRequestError,
 	VehicleUpdateIdNotValidError
 } from './updateVehicleErrors';
-import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { IVehicleRepository } from '../../../repositories/vehicle.repository';
 import { isValidObjectId } from 'mongoose';
-import { validateUpdateVehicleSchema } from 'src/domain/vehicle/vehicle.validation';
+import { validateUpdateVehicleSchema } from '../../../domain/vehicle/vehicle.validation';
 
 type Response = Result<UpdateVehicleResponseDto, VehicleUpdateNotFoundError | VehicleUpdateBadRequestError>;
 

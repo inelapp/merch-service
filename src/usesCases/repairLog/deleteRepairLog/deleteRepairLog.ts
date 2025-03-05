@@ -1,9 +1,9 @@
 import { err, ok, Result } from 'neverthrow';
 import { DeleteRepairLogResponse } from './deleteRepairLogResponseDto';
 import { RepairLogDeleteInvalidIdError, RepairLogDeleteLogNotFoundError } from './deleteRepairLogErrors';
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 import { DeleteRepairLogRequest } from './deleteRepairLogRequestDto';
-import { IRepairLogRepository } from 'src/repositories';
+import { IRepairLogRepository } from '../../../repositories';
 import { isValidObjectId } from 'mongoose';
 
 type Response = Result<DeleteRepairLogResponse, RepairLogDeleteInvalidIdError | RepairLogDeleteLogNotFoundError>;

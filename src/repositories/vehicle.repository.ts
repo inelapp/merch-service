@@ -1,4 +1,4 @@
-import { IVehicleProps, Vehicle } from 'src/domain/vehicle/vehicle';
+import { IVehicleProps, Vehicle } from '../domain/vehicle/vehicle';
 
 export interface IVehicleRepository {
 	createVehicle(request: IVehicleProps): Promise<Vehicle>; // Crear un vehículo

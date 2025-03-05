@@ -1,9 +1,9 @@
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 
 import { err, ok, Result } from 'neverthrow';
 import { GetAllVehicleRequestDto } from './getAllVehiclesRequestDto';
 import { GetAllVehiclesResponseDto } from './getAllVehiclesResponse';
-import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { IVehicleRepository } from '../../../repositories/vehicle.repository';
 import { GetVehicleBadRequestError } from './getAllVehiclesErrors';
 
 type Response = Result<GetAllVehiclesResponseDto[], GetVehicleBadRequestError>;

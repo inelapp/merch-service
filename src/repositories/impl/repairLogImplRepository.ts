@@ -1,7 +1,7 @@
-import { IRepairLogProps, RepairLog } from 'src/domain/repair/repairLog';
+import { IRepairLogProps, RepairLog } from '../../domain/repair/repairLog';
 import { IRepairLogRepository } from '../repairLog.repository';
-import { RepairLogModel } from 'src/db/mongo.schema';
-import { RepairLogMap } from 'src/mappers/repairLogMap';
+import { RepairLogModel } from '../../db/mongo.schema';
+import { RepairLogMap } from '../../mappers/repairLogMap';
 
 export class RepairLogImplRepository implements IRepairLogRepository {
 	private readonly repairLogModel: typeof RepairLogModel;

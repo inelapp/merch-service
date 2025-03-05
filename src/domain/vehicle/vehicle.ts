@@ -1,6 +1,5 @@
 import { ok, err, Result } from 'neverthrow';
 import { validateUpdateVehicleSchema, validateVehicleSchema } from './vehicle.validation';
-import { VehicleUpdateBadRequestError } from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export interface IVehicleProps {
 	make: string;

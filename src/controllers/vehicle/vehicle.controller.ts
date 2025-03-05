@@ -1,29 +1,29 @@
 import { Request, Response } from 'express';
-import { StatusCode } from 'src/types';
-import { createVehicle } from 'src/usesCases/vehicle/createVehicle';
-import { getAllVehicles } from 'src/usesCases/vehicle/getAllVehicles';
+import { StatusCode } from '../../types';
+import { createVehicle } from '../../usesCases/vehicle/createVehicle';
+import { getAllVehicles } from '../../usesCases/vehicle/getAllVehicles';
 import {
 	VehicleAlreadyRegisteredError,
 	VehicleCreateBadRequestError
-} from 'src/usesCases/vehicle/createVehicle/createVehicleErrors';
+} from '../../usesCases/vehicle/createVehicle/createVehicleErrors';
 
-import { CreateVehicleRequestDto } from 'src/usesCases/vehicle/createVehicle/createVehicleRequestDto';
-import { response } from 'src/utils/response';
+import { CreateVehicleRequestDto } from '../../usesCases/vehicle/createVehicle/createVehicleRequestDto';
+import { response } from '../../utils/response';
 import { GetVehicleBadRequestError } from '../../usesCases/vehicle/getAllVehicles/getAllVehiclesErrors';
 import { deleteVehicle } from '../../usesCases/vehicle/deleteVehicle';
-import { DeleteVehicleRequestDto } from 'src/usesCases/vehicle/deleteVehicle/deleteVehicleResquestDto';
+import { DeleteVehicleRequestDto } from '../../usesCases/vehicle/deleteVehicle/deleteVehicleResquestDto';
 import {
 	VehicleDeleteBadRequestError,
 	VehicleNotFoundError
-} from 'src/usesCases/vehicle/deleteVehicle/deleteVehicleErrors';
-import { UpdateVehicleRequestDto } from 'src/usesCases/vehicle/updateVehicle/updateVehicleRequestDto';
-import { updateVehicle } from 'src/usesCases/vehicle/updateVehicle';
+} from '../../usesCases/vehicle/deleteVehicle/deleteVehicleErrors';
+import { UpdateVehicleRequestDto } from '../../usesCases/vehicle/updateVehicle/updateVehicleRequestDto';
+import { updateVehicle } from '../../usesCases/vehicle/updateVehicle';
 import {
 	VehicleUpdateBadRequestError,
 	VehicleUpdateIdNotValidError,
 	VehicleUpdateLicensePlateAlreadyAssigned,
 	VehicleUpdateNotFoundError
-} from 'src/usesCases/vehicle/updateVehicle/updateVehicleErrors';
+} from '../../usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export class VehicleController {
 	constructor() {

@@ -8,8 +8,8 @@ import {
 	VehicleInvalidLicensePlateError,
 	VehicleInvalidYearError
 } from './createVehicleErrors';
-import { Vehicle } from 'src/domain/vehicle/vehicle';
-import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { Vehicle } from '../../../domain/vehicle/vehicle';
+import { IVehicleRepository } from '../../../repositories/vehicle.repository';
 import { CreateVehicleResponseDto } from './createVehicleResponse';
 
 type Response = Result<

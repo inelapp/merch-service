@@ -1,9 +1,9 @@
 import { err, ok, Result } from 'neverthrow';
-import { UseCase } from 'src/utils';
+import { UseCase } from '../../../utils';
 import { VehicleDeleteBadRequestError, VehicleNotFoundError } from './deleteVehicleErrors';
 import { DeleteVehicleResponseDto } from './deleteVehicleResponseDto';
 import { DeleteVehicleRequestDto } from './deleteVehicleResquestDto';
-import { IVehicleRepository } from 'src/repositories/vehicle.repository';
+import { IVehicleRepository } from '../../../repositories/vehicle.repository';
 import { isValidObjectId } from 'mongoose';
 
 type Response = Result<DeleteVehicleResponseDto, VehicleDeleteBadRequestError | VehicleNotFoundError>;
