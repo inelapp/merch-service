@@ -60,6 +60,33 @@ export default {
       }
     },
     '/vehicles/{id}': {
+      get: {
+        tags: ['Vehicle'],
+        summary: 'Get a vehicle by ID',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+            description: 'ID of the vehicle to retrieve'
+          }
+        ],
+        responses: {
+          200: {
+            description: 'Vehicle details',
+            schema: {
+              $ref: '#/definitions/Vehicle'
+            }
+          },
+          404: {
+            description: 'Vehicle not found',
+            schema: {
+              $ref: '#/definitions/VehicleNotFoundError'
+            }
+          },
+        }
+      },
       delete: {
         tags: ['Vehicle'],
         summary: 'Delete a vehicle by ID',

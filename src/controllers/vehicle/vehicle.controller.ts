@@ -24,12 +24,29 @@ import {
 	VehicleUpdateLicensePlateAlreadyAssigned,
 	VehicleUpdateNotFoundError
 } from '../../usesCases/vehicle/updateVehicle/updateVehicleErrors';
+import { getVehicle } from '../../usesCases/vehicle/getVehicle';
+import { GetVehicleNotFoundError } from '../../usesCases/vehicle/getVehicle/getVehicleErrors';
 
 export class VehicleController {
 	constructor() {
 		this.createVehicle = this.createVehicle.bind(this);
 		this.getAllVehicles = this.getAllVehicles.bind(this);
 		this.deleteVehicle = this.deleteVehicle.bind(this);
+	}
+
+	async getVehicle(req: Request, res: Response) {
+		const { id } = req.params;
+		const result = await getVehicle.execute({ id });
+		if (result.isErr()) {
+			const error = result.error;
+			switch (error.constructor) {
+				case GetVehicleNotFoundError:
+					return response(res, error.message, StatusCode.NOT_FOUND, error.constructor.name);
+				default:
+					return response(res, error.message, StatusCode.INTERNAL_SERVER_ERROR, error.constructor.name);
+			}
+		}
+		return response(res, result.value, StatusCode.OK);
 	}
 
 	async createVehicle(req: Request, res: Response) {

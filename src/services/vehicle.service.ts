@@ -19,6 +19,7 @@ class VehicleRouter {
 			.post(this.controller.createVehicle.bind(this.controller));
 		this.router
 			.route('/vehicles/:id')
+			.get(this.controller.getVehicle.bind(this.controller))
 			.patch(this.controller.updateVehicle.bind(this.controller))
 			.delete(this.controller.deleteVehicle.bind(this.controller));
 	}
