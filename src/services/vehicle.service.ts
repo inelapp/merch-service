@@ -13,10 +13,14 @@ class VehicleRouter {
 	}
 
 	routes() {
-		this.router.route('/vehicle/create').post(this.controller.createVehicle.bind(this.controller));
-		this.router.route('/vehicles').get(this.controller.getAllVehicles.bind(this.controller));
-		this.router.route('/vehicle/:id').put(this.controller.updateVehicle.bind(this.controller));
-		this.router.route('/vehicle/:id').delete(this.controller.deleteVehicle.bind(this.controller));
+		this.router
+			.route('/vehicles')
+			.get(this.controller.getAllVehicles.bind(this.controller))
+			.post(this.controller.createVehicle.bind(this.controller));
+		this.router
+			.route('/vehicles/:id')
+			.patch(this.controller.updateVehicle.bind(this.controller))
+			.delete(this.controller.deleteVehicle.bind(this.controller));
 	}
 }
 

@@ -18,17 +18,16 @@ export default {
       post: {
         tags: ['Vehicle'],
         summary: 'Create a new vehicle',
-        requestBody: {
-          description: 'Vehicle object that needs to be added',
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/definitions/CreateVehicleRequestDto'
-              }
+        parameters: [
+          {
+            name: 'body',
+            in: 'body',
+            required: true,
+            schema: {
+              $ref: '#/definitions/CreateVehicleRequestDto'
             }
           }
-        },
+        ],
         responses: {
           200: {
             description: 'Vehicle created successfully',
@@ -101,19 +100,16 @@ export default {
             required: true,
             type: 'string',
             description: 'ID of the vehicle to update'
-          }
-        ],
-        requestBody: {
-          description: 'Vehicle object that needs to be updated',
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/definitions/UpdateVehicleRequestDto'
-              }
+          },
+          {
+            name: 'body',
+            in: 'body',
+            required: true,
+            schema: {
+              $ref: '#/definitions/UpdateVehicleRequestDto'
             }
           }
-        },
+        ],
         responses: {
           200: {
             description: 'Vehicle updated successfully'
@@ -144,7 +140,8 @@ export default {
         category: { type: 'string' },
         licensePlate: { type: 'string' },
         notes : { type: 'string' },
-        ownerId: { type: 'string' }
+        ownerId: { type: 'string' },
+        registrationDate: { type: 'string' }
       },
       required: ['make','licensePlate', 'model', 'year', 'ownerId', 'licensePlate', 'registrationDate', 'category']
     },
@@ -222,10 +219,10 @@ export default {
     UpdateVehicleRequestDto: {
       type: 'object',
       properties: {
-        licensePlate: { type: 'string' },
-        model: { type: 'string' },
-        year: { type: 'number' },
-        ownerId: { type: 'string' }
+        licensePlate: { type: 'string', example: 'ABC123' },
+        model: { type: 'string', example: 'Civic' },
+        year: { type: 'number', example: 2025 },
+        ownerId: { type: 'string', example: null }
       }
     },
     VehicleUpdateBadRequestError: {
