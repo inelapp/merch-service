@@ -1,7 +1,7 @@
 import { IVehicleProps, Vehicle } from '../../domain/vehicle/vehicle';
-import { IVehicleRepository } from '../vehicle.repository';
+import { IVehicleFilters, IVehicleRepository } from '../vehicle.repository';
 import { VehicleModel } from '../../db/mongo.schema';
-import { VehicleMap } from '../../mappers/vehicleMap';
+import { GetVehicleDbResponseMap, IVehicleDbResponse, VehicleMap } from '../../mappers/vehicleMap';
 import { VehicleUpdateLicensePlateAlreadyAssigned } from '../../usesCases/vehicle/updateVehicle/updateVehicleErrors';
 
 export class VehicleImplRepository implements IVehicleRepository {
@@ -11,28 +11,40 @@ export class VehicleImplRepository implements IVehicleRepository {
 		this.vehicleModel = VehicleModel;
 	}
 
-	async getVehicleByLicensePlate(licensePlate: string): Promise<Vehicle | null> {
+	async getVehicle(filters?: IVehicleFilters): Promise<GetVehicleDbResponseMap | null> {
 		try {
-			const vehicle = await this.vehicleModel.findOne({ licensePlate });
-			return vehicle ? VehicleMap.fromDbToDomain(vehicle) : null;
+			const result = await this.vehicleModel.findOne(filters).populate('ownerId');
+			if (!result) {
+				return null;
+			}
+			return VehicleMap.fromDbToDomainDetail(result as IVehicleDbResponse);
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	async getVehicleById(id: string): Promise<Vehicle | null> {
+	async getVehicleByLicensePlate(licensePlate: string): Promise<GetVehicleDbResponseMap | null> {
 		try {
-			const vehicle = await this.vehicleModel.findById(id);
-			return vehicle ? VehicleMap.fromDbToDomain(vehicle) : null;
+			const vehicle = await this.vehicleModel.findOne({ licensePlate }).populate('ownerId');
+			return vehicle ? VehicleMap.fromDbToDomainDetail(vehicle as IVehicleDbResponse) : null;
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	async getAllVehicles(): Promise<Vehicle[]> {
+	async getVehicleById(id: string): Promise<GetVehicleDbResponseMap | null> {
 		try {
-			const vehicles = await this.vehicleModel.find();
-			return vehicles.map((vehicle) => VehicleMap.fromDbToDomain(vehicle));
+			const vehicle = await this.vehicleModel.findById(id).populate('ownerId');
+			return vehicle ? VehicleMap.fromDbToDomainDetail(vehicle as IVehicleDbResponse) : null;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async getAllVehicles(filters: IVehicleFilters): Promise<GetVehicleDbResponseMap[]> {
+		try {
+			const vehicles = await this.vehicleModel.find(filters).populate('ownerId');
+			return vehicles.map((vehicle) => VehicleMap.fromDbToDomainDetail(vehicle as IVehicleDbResponse));
 		} catch (error) {
 			throw error;
 		}

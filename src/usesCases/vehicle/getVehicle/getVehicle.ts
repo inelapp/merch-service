@@ -1,5 +1,4 @@
 import { UseCase } from '../../../utils';
-
 import { err, ok, Result } from 'neverthrow';
 import { GetVehicleRequestDto } from './getVehicleRequestDto';
 import { GetVehicleResponseDto } from './getVehicleResponse';

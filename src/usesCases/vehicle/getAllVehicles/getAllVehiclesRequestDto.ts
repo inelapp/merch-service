@@ -1,4 +1,5 @@
 export interface GetAllVehicleRequestDto {
+	ownerId?: string;
 	// make: string;
 	// model: string;
 	// year: number;

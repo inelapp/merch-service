@@ -17,7 +17,7 @@ class GetAllVehicles implements UseCase<GetAllVehicleRequestDto, Response> {
 
 	async execute(_request: GetAllVehicleRequestDto, _service?: any): Promise<Response> {
 		try {
-			const result = await this.vehicleRepository.getAllVehicles();
+			const result = await this.vehicleRepository.getAllVehicles(_request);
 			return ok(result);
 		} catch (error) {
 			return err(error);

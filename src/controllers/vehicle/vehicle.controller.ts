@@ -78,8 +78,8 @@ export class VehicleController {
 		return response(res, result.value, StatusCode.CREATED);
 	}
 
-	async getAllVehicles(_req: Request, res: Response) {
-		const result = await getAllVehicles.execute({});
+	async getAllVehicles(req: Request, res: Response) {
+		const result = await getAllVehicles.execute(req.query);
 		if (result.isErr()) {
 			const error = result.error;
 			switch (error.constructor) {

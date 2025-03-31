@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IUserDb } from './interface';
+import { IOwnerDb, IUserDb } from './interface';
 import { ramdonString } from '../utils';
 import { IRoleDb } from './interface/role.interface';
 import { IUserRoleDb } from './interface/userRole.interface';
@@ -78,6 +78,20 @@ const repairLogSchema = new Schema<IRepairLogDb>(
 	}
 );
 
+const ownerSchema = new Schema<IOwnerDb>({
+	name: { type: String, required: true },
+	lastName: { type: String, required: true },
+	middleName: { type: String },
+	secondLastName: { type: String },
+	documentType: { type: String, required: true },
+	documentNumber: { type: String, required: true },
+	phoneNumber: { type: String },
+	email: { type: String },
+}, {
+	timestamps: true,
+	versionKey: false
+})
+
 userSchema.pre<IUserDb>('save', async function (next) {
 	if (!this.token) {
 		this.token = ramdonString(25);
@@ -91,5 +105,6 @@ const RoleModel = model<IRoleDb>('Role', roleSchema, 'roles');
 const UserRoleModel = model<IUserRoleDb>('UserRole', userRoleSchema, 'user_role');
 const VehicleModel = model<IVehicleDb>('Vehicle', vehicleSchema, 'vehicles');
 const RepairLogModel = model<IRepairLogDb>('RepairLog', repairLogSchema, 'repair_log');
+const OwnerModel = model<IOwnerDb>('Owner', ownerSchema, 'owners');
 
-export { UserModel, RoleModel, UserRoleModel, VehicleModel, RepairLogModel };
+export { UserModel, RoleModel, UserRoleModel, VehicleModel, RepairLogModel, OwnerModel };

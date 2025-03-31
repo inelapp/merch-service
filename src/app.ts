@@ -6,6 +6,7 @@ import cors from 'cors';
 import vehicleService from './services/vehicle.service';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDoc from './utils/docs/v1/swagger-doc';
+import ownerService from './services/owner.service';
 
 const app = express();
 
@@ -20,9 +21,7 @@ app.use(
 );
 
 app.use('/favicon.ico', (req: Request, res: Response) => res.status(204).end() as any);
-app.use('/api/v1', userService);
-app.use('/api/v1', vehicleService);
-app.use('/api/v1', repairLogService);
+app.use('/api/v1', userService, vehicleService, repairLogService, ownerService);
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 export default app;
