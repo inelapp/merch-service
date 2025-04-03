@@ -20,7 +20,7 @@ export class OwnerImplRepository implements IOwnerRepository {
     }
     async getOwners(filters?: OwnerFilters): Promise<Owner[]> {
         try {
-            const owners = await this.ownerModel.find();
+            const owners = await this.ownerModel.find({ ...filters });
             return owners.map((owner) => OwnerMap.fromDbToDomain(owner));
         } catch (error) {
             throw error;
