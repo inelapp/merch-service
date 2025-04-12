@@ -50,7 +50,7 @@ export class VehicleController {
 	}
 
 	async createVehicle(req: Request, res: Response) {
-		const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } =
+		const { make, model, year, category, licensePlate, registrationDate, notes, ownerId, status } =
 			req.body as CreateVehicleRequestDto;
 		const result = await createVehicle.execute({
 			make,
@@ -60,7 +60,8 @@ export class VehicleController {
 			licensePlate,
 			registrationDate,
 			notes,
-			ownerId
+			ownerId,
+			status
 		});
 
 		if (result.isErr()) {

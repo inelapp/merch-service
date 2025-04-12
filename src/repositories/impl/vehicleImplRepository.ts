@@ -52,7 +52,7 @@ export class VehicleImplRepository implements IVehicleRepository {
 
 	async createVehicle(request: IVehicleProps): Promise<Vehicle> {
 		try {
-			const { make, model, year, category, licensePlate, registrationDate, notes, ownerId } = request;
+			const { make, model, year, category, licensePlate, registrationDate, notes, ownerId, status } = request;
 			const newVehicle = new this.vehicleModel({
 				make,
 				model,
@@ -61,7 +61,8 @@ export class VehicleImplRepository implements IVehicleRepository {
 				licensePlate,
 				registrationDate,
 				notes,
-				ownerId
+				ownerId,
+				status
 			});
 			await newVehicle.save();
 			return VehicleMap.fromDbToDomain(newVehicle);

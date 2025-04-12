@@ -7,4 +7,5 @@ export interface CreateVehicleRequestDto {
 	registrationDate: Date;
 	notes?: string | null;
 	ownerId: string | null;
+	status?: string;
 }

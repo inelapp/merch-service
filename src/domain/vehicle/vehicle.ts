@@ -10,6 +10,7 @@ export interface IVehicleProps {
 	registrationDate: Date;
 	notes?: string | null;
 	ownerId: string | null;
+	status?: string;
 }
 
 export class Vehicle {
@@ -30,6 +31,8 @@ export class Vehicle {
 	notes: string | null;
 
 	ownerId: string | null;
+
+	status: string;
 
 	constructor(props: IVehicleProps) {
 		Object.assign(this, props);

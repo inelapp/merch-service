@@ -10,6 +10,7 @@ export interface IVehicleDb {
 	registrationDate: Date;
 	notes?: string;
 	ownerId: String | Schema.Types.ObjectId | null;
+	status: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

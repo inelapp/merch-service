@@ -8,4 +8,5 @@ export interface UpdateVehicleRequestDto {
 	registrationDate?: Date;
 	notes?: string | null;
 	ownerId?: string | null;
+	status?: string;
 }

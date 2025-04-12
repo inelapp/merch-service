@@ -12,6 +12,7 @@ export interface GetVehicleDbResponseMap {
 	licensePlate: string;
 	registrationDate: Date;
 	notes?: string;
+	status: string;
 	owner: Partial<Owner> | null;
 }
 
@@ -27,7 +28,8 @@ export class VehicleMap {
 			licensePlate: vehicle.licensePlate,
 			registrationDate: vehicle.registrationDate,
 			notes: vehicle.notes,
-			ownerId: vehicle.ownerId
+			ownerId: vehicle.ownerId,
+			status: vehicle.status
 		} as Vehicle;
 	}
 
@@ -51,7 +53,8 @@ export class VehicleMap {
 				documentNumber: vehicle.ownerId?.documentNumber || '',
 				phoneNumber: vehicle.ownerId?.phoneNumber || '',
 				email: vehicle.ownerId?.email || ''
-			} : null
+			} : null,
+			status: vehicle.status
 		}
 	}
 }
